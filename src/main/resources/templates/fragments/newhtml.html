@@ -1,0 +1,82 @@
+        <!-- show album fragment -->
+        <div th:fragment="showAlbum" class="album py-5 bg-light">
+            <div class="container">
+                <h2>Album (<span th:text="${count}">count</span> images)</h2>
+                <div class="row">
+                    <div class="col-md-4" th:each="picture : ${pictures}">
+                        <div class="card md-4 box-shadow">
+                            <a th:href="@{/picture/{id}(id=${picture.id})}">
+                                <img class="img-thumbnail" th:src="@{/picture/{id}/content(id=${picture.id})}"/>
+                                <div class="card-body">
+                                    <span class="card-text" th:text="${picture.description}">desc</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <!--
+                                <a th:href="@{/picture/{id}(id=${picture.id})}">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                </a>
+                                -->
+                                <div th:if="${owner == #authentication.name}">
+                                    <a th:href="@{/picture/{id}/setavatar(id=${picture.id})}">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Set Avatar</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <small class="text-muted" th:text="${#temporals.format(picture.timestamp,'dd.MM.yyyy HH:mm')}">timestamp</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- post picture fragment -->
+        <div th:fragment="addPicture" class="container">
+            <div class="row">
+                <h2 class="mb-3">Add a new picture</h2>
+            </div>
+            <form class="input-group" method="POST" th:action="@{/savepic}" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="mb-3">
+                        <input type="file" name="file" id="file" class="btn btn-sm btn-outline-secondary"/><br />
+                        <label>Title: </label>
+                        <input type="text" class="form-control" name="title" id="title"/>
+                        <label>Description: </label>
+                        <input type="text" class="form-control" name="desc" id="desc"/>
+                        <input type="submit" value="Add!" class="btn btn-sm btn-outline-secondary"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+                
+        <!-- show picture fragment -->
+        <div class="container bg-light" th:fragment="showPicture" th:if="${current != null}">
+            <img th:src="@{/picture/{id}/content(id=${current})}"/>
+            <p th:text="${desc}"></p>
+            <a th:href="@{/album/}"><button type="button" class="btn btn-sm btn-outline-secondary">Back to Album</button></a>
+        </div>
+        
+        
+        <section th:replace="fragments/layout :: showComments">comment</section>
+            <section th:replace="fragments/layout :: addComment">comment</section>
+            <!-- comment on picture form fragment -->
+            <!-- only show if we have a "current" picture set -->
+            <div th:fragment="addComment" th:if="${current != null}">
+                <form class="input-group" method="POST" th:action="@{/pictures/{pictureId}/addComment(pictureId=${current})}">
+                    <label for="commentBody" class="col-sm-2 col-form-label">Add comment: </label>
+                    <input type="text" class="form-control" name="commentBody" id="commentBody"/>
+                    <input type="submit" value="Send" class="btn btn-sm btn-outline-secondary"/>
+                </form>
+            </div>
+            
+            <!-- list picture comments fragment -->
+        <div th:fragment="showComments" th:if="${current != null}">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-light" th:each="comment : ${comments}">
+                    <strong th:text="${comment.account.username}">acc</strong>: <span th:text="${comment.content}">content</span>
+                </li>
+            </ul>
+        </div>

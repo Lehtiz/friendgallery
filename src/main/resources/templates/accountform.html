@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Accounts')"></head>
+    <body>
+        
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+        
+        <div class="container bg-light">
+            <form th:action="@{/create}" th:object="${account}" method="POST">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="username">Username: </label>
+                            <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">@</div>
+                            </div>
+                                <input type="text" class="form-control" th:field="*{username}" id="username" placeholder="Username"/>
+                            </div>
+                            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username Error</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="firstname">First name: </label>
+                            <input type="text" class="form-control" th:field="*{firstname}" id="firstname" placeholder="First name"/>
+                            <div th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">firstname error</div>
+                        </div>
+                        <div class="col">
+                            <label for="lastname">Last name: </label>
+                            <input type="text" class="form-control" th:field="*{lastname}" id="lastname" placeholder="Last name"/>
+                            <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">lastname error</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="password">Password: </label>
+                            <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="Password"/>
+                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        
+        
+    </body>
+</html>

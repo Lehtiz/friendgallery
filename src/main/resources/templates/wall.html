@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title=${pagetitle})"></head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+        
+        <div class="container bg-light border">
+            <div class="row">
+                <div class="col-sm-9">
+                    <h1 class="display-4" th:text="${name}">Username</h1>
+                    
+
+                    <div class="col-6">
+                        <div class="row">
+                            <!-- show selected avatar or link to avatar selection -->
+                            <div th:if="${avatarId != null}">
+                                <img class="img-fluid rounded" th:src="@{/picture/{id}/content(id=${avatarId})}"/>
+                            </div>
+                            <div th:if="${avatarId == null}">
+                                <div th:if="${name == #authentication.name}">
+                                    <a  th:href="@{/album/}">Pick an avatar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="lead">"TODO: inspirational motto"</p>
+
+                    <hr class="my-4" />
+
+                    <p>TODO short description</p>
+
+                    <a class="btn btn-primary btn-lg" role="button" th:href="@{/album/{username}(username=${username})}">Show Album</a>
+                    
+                </div>
+
+                <div class ="col-sm-3" th:if="${accounts != null}">
+                    <div class="row">
+                        <div th:if="${name == #authentication.name}">
+                            <!--<a class="btn btn-primary btn-sm" role="button" th:href="@{|~/${#authentication.name}/edit|}">Settings</a>-->
+                            <a class="btn btn-primary btn-sm" role="button" th:href="@{/friendrequest}"><h2 class="mb-3">Friends:</h2></a>
+                        </div>
+                        <div th:if="${name != #authentication.name}">
+                            <h2 class="mb-3">Friends:</h2>
+                        </div>
+                        <!-- show friend request button if not self or is not already a friend -->
+                        <div  th:if="${authedusername != username AND isFriend == false}">
+                            <form class="form-inline" method="POST" th:action="@{/friendrequest/{username}(username=${username})}">
+                                <button class="btn btn-primary btn-sm" role="button">Friend request</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div th:replace="fragments/layout :: listAccounts">friendList</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container border bg-light">
+            <h2 class="mb-3">Messages:</h2>
+            <section th:replace="fragments/layout :: listComments">comments</section>
+
+            <form method="POST" th:action="@{/wall/{wall}/comment/add(wall=${name})}">
+                <label for="commentBody">Comment: </label>
+                <input type="text" class="form-control" name="commentBody" id="commentBody"/>
+                <input type="submit" value="Send" class="btn btn-sm btn-outline-secondary"/>
+            </form>
+        </div>
+        
+    </body>
+</html>

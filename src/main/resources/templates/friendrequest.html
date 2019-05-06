@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Friend')"></head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+
+        <!-- outgoing req -->
+        <div class="container bg-light">
+            <div class="row">
+                <a th:href="@{/wall/}">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Back to wall</button>
+                </a>
+            </div>
+            <div th:if="${not #lists.isEmpty(friendrequests_out)}">
+                <h1>Sent friend requests</h1>
+                <ul class="container list-group">
+                    <li th:each="friendrequest : ${friendrequests_out}" class="list-group-item">
+                        <div th:if="${friendrequest.friendRequestStatus != true}">
+                            <span>Not Accepted</span>
+                        </div>
+                        <div th:if="${friendrequest.friendRequestStatus == true}">
+                            <span>Accepted</span>
+                        </div>
+                        <a th:href="@{/friendrequest/{id}/manage(id=${friendrequest.id})}">manage</a>
+                        <span>You sent a friend request to
+                            <strong th:text="${friendrequest.recipient.username}">recipient</strong>
+                        </span>
+                        <sub><p class="text-right" th:text="${friendrequest.timestamp}">timestamp</p></sub>
+                    </li>
+                </ul>
+            </div>
+        
+            <!-- incoming req -->
+            <div th:if="${not #lists.isEmpty(friendrequests_in)}">
+                <h1>Received friend requests</h1>
+                <ul class="container list-group">
+                    <li th:each="friendrequest : ${friendrequests_in}" class="list-group-item">
+                        <div th:if="${friendrequest.friendRequestStatus != true}">
+                            <span>not accepted</span>
+                        </div>
+                        <div th:if="${friendrequest.friendRequestStatus == true}">
+                            <span>Accepted</span>
+                        </div>
+                        <a th:href="@{/friendrequest/{id}/manage(id=${friendrequest.id})}">manage</a>
+                        <span>
+                            <strong th:text="${friendrequest.sender.username}">sender</strong> sent a friend request to You
+                        </span>
+                        <sub><p class="text-right" th:text="${friendrequest.timestamp}">timestamp</p></sub>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container bg-light" th:if="${friendrequest != null}">
+            <div>
+                <h1>Manage friend request</h1>
+                <div>
+                    <strong th:text="${friendrequest.sender.username}">sender</strong>
+                    <span>sent a friend request to</span>
+                    <strong th:text="${friendrequest.recipient.username}">recipient</strong>
+                    (<strong th:text="${friendrequest.timestamp}">timestamp</strong>)
+                </div>
+                <form method="POST" th:action="@{/friendrequest/{id}/manage(id=${friendrequest.id})}">
+                    <div th:if="${user == #authentication.name}">
+                    <button class="btn btn-primary btn-lg" name="value" type="submit" value="true">Accept!</button>
+                    <button class="btn btn-primary btn-lg" name="value" type="submit" value="false">Deny!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>

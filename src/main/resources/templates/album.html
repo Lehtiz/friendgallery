@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title=${pagetitle})">Album</head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+        <div class="container border bg-light">
+            <div class="album py-5 bg-light">
+                <div class="row">
+                    <h2 class="col-4">Album (<span th:text="${count}">count</span> images)</h2>
+                    <div class="col-4" th:if="${owner == #authentication.name}">
+                        <a th:href="@{/picture/add}"><button type="button" class="btn btn-sm btn-outline-secondary">Upload</button></a>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4" th:each="picture : ${pictures}">
+                        <div class="card md-4 box-shadow">
+                            <a th:href="@{/picture/{id}(id=${picture.id})}">
+                                <img class="img-thumbnail" th:src="@{/picture/{id}/content(id=${picture.id})}"/>
+                                <div class="card-body">
+                                    <span class="card-text" th:text="${picture.title}">title</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <!--
+                                <a th:href="@{/picture/{id}/edit(id=${picture.id})}">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </a>
+                                -->
+                                <div th:if="${owner == #authentication.name}">
+                                    <a th:href="@{/picture/{id}/setavatar(id=${picture.id})}">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Set Avatar</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <small class="text-muted" th:text="${#temporals.format(picture.timestamp,'dd.MM.yyyy HH:mm')}">timestamp</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Search')"></head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+        
+        
+        <div class="container bg-light border">
+            <div class="input-group">
+                <form th:action="@{/search}" th:object="${account}" method="GET">
+                    <div class="row">
+                        <label>Username</label>
+                        <input type="text" class="form-control" th:field="*{username}" />
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <section th:replace="fragments/layout :: listAccounts"><p>accounts</p></section>
+        
+        
+    </body>
+</html>

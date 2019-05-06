@@ -1,0 +1,9 @@
+{
+    "elements": {},
+    "attributes": {
+        "th:text": {},
+        "th:fragment": {
+            "context": "head"
+        }
+    }
+}

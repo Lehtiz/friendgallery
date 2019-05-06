@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Persons')"></head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+
+        <div class="container bg-light">
+            <h2 class="mb-3">Add a new picture</h2>
+            <form class="input-group" method="POST" th:action="@{/savepic}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" name="file" id="file" class="btn btn-sm btn-outline-secondary" /><br />
+                    
+                    <label>Title: </label>
+                    <input type="text" class="form-control" name="title" id="title" />
+                    
+                    <label>Description: </label>
+                    <input type="text" class="form-control" name="description" id="description" />
+                    
+                    <input type="submit" value="Add!" class="btn btn-sm btn-outline-secondary" />
+                </div>
+            </form>
+        </div>
+
+    </body>
+</html>

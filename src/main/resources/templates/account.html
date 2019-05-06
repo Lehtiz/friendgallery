@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='${account.username}')"></head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+        
+        <span th:text="${account.username}">username</span> <br />
+        <span th:text="${account.firstname}">firstname</span> <br />
+        <span th:text="${account.lastname}">lastname</span> <br />
+        
+        
+        <!-- 
+        get wall from fragment here
+        wall contains username name and lastname
+        picture, link to album
+        link to send friendrequest
+        -->
+        
+        
+    </body>
+</html>

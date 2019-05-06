@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Pictures')"></head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+        <div class="container bg-light border">
+            <div class="row">
+                <div class="col-md-6" th:if="${current != null}">
+                    <!-- picture -->
+
+                        <a th:href="@{/album/}">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Back to Album</button>
+                        </a>
+
+                    <h2 th:text="${title}"></h2>
+                    <img class="img-fluid" th:src="@{/picture/{id}/content(id=${current})}"/>
+
+                    <p><span th:text="${desc}"></span></p>
+                    <p>
+                        Upvotes: <span th:text="${votes}"></span>
+                        <form class="input-group" method="POST" th:action="@{/picture/{pictureId}/upvote(pictureId=${current})}">
+                            <input type="submit" value="Upvote!" class="btn btn-sm btn-outline-secondary"/>
+                        </form>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <!-- comments -->
+                    <h2 class="mb-3">Comments:</h2>
+                    <section th:replace="fragments/layout :: listComments">comments</section>
+
+                    <!-- comments form -->
+                    <form class="input-group" method="POST" th:action="@{/pictures/{pictureId}/comment/add(pictureId=${current})}">
+                        <label for="commentBody" class="col-sm-2 col-form-label">Add comment: </label>
+                        <input type="text" class="form-control" name="commentBody" id="commentBody"/>
+                        <input type="submit" value="Send" class="btn btn-sm btn-outline-secondary"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+      
+        
+        
+        
+        
+        
+        
+    </body>
+</html>

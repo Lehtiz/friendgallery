@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+    
+    <!-- head fragment -->
+    <head th:fragment="head(title)">
+        <meta charset="UTF-8" />
+        <title th:text="${title}">Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    </head>
+    
+    
+    <body>
+        
+        <!-- Navbar fragment -->
+        <header th:fragment="header" class="container">
+            <nav class="row navbar navbar-expand-sm navbar-dark bg-dark">
+                <!-- hide/show items based on auth -->
+                <ul class="navbar-nav" sec:authorize="isAnonymous()">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Main page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/accountform}">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}">Log In</a>
+                    </li>
+                </ul>
+                <ul sec:authorize="isAuthenticated()" class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Main page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/accounts}">List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/searchform}">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/wall}">Wall</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/album}">Album</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">Log Out</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- List Accounts fragment -->
+        <ul th:fragment="listAccounts" class="container list-group bg-light">
+            <li th:each="account : ${accounts}" class="list-group-item bg-light">
+                <a th:href="@{/wall/{username}(username=${account.username})}">
+                    <span th:text="${account.username}">person</span>
+                </a>
+            </li>
+        </ul>
+        
+        <!-- List Comments fragment -->
+        <div th:fragment="listComments" class="container bg-light">
+            <div class="">
+                <div class="row border-bottom" th:each="comment : ${comments}">
+                    <div class="col-9">
+                        <strong th:text="${comment.account.username}">acc</strong>:
+                        <div class="text-justify" th:text="${comment.content}">content</div> 
+                    </div>
+                    <div class="col-3">
+                        <small>
+                            <p class="text-right" th:text="${#temporals.format(comment.timestamp,'dd.MM.yyyy HH:mm')}">timestamp</p>
+                            <div class="text-right">
+                                Upvotes:
+                                <span class="text-right" th:text="${#lists.size(comment.votes)}">upvotes</span>
+                                <a th:href="@{/comment/{id}/upvote(id=${comment.id})}">
+                                    <!--<button type="button" class="btn btn-sm btn-outline-secondary">+</button>-->
+                                    +
+                                </a>
+                            </div>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- delete picture fragment -->
+        <form th:method="DELETE" th:action="@{/picture/{id}/(id=${current})}" >
+            <input type="submit" value="DELETE!" class="btn btn-sm btn-outline-secondary"/>
+        </form>
+        
+    </body>
+    
+    
+</html>

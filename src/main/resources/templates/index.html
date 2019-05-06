@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head(title='Persons')"></head>
+    <body>
+        <header th:replace="fragments/layout :: header"><p>menu</p></header>
+
+        <div class="container bg-light border">
+            <h1 th:text="${'Hello ' + message}" >Hello world</h1>
+        </div>
+
+    </body>
+</html>
